@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crea tu propio KIN KIN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Crea tu propio KIN KIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/konva@9/konva.min.js"></script>
@@ -14,10 +16,14 @@
             <p class="subtitle">CREA TU PROPIO</p>
             <h1 class="logo">KIN KIN</h1>
             <div id="assetsContainer"></div>
-            <button id="resetBtn">RESET</button>
+            <div class="btn-group">
+                <button id="downloadBtn">⬇ GUARDAR</button>
+                <button id="resetBtn">RESET</button>
+            </div>
         </div>
         <div id="stage-container"></div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
+ 
