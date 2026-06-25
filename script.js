@@ -160,18 +160,32 @@ function removeGhost() {
     if (ghostEl) { ghostEl.remove(); ghostEl = null; }
 }
 
+let touchStartTime = 0;
 function onAssetTouchStart(e) {
+    touchStartTime = Date.now();
     const asset = e.currentTarget;
     activeDragSrc = asset.dataset.src;
-    const touch = e.touches[0];
-    createGhost(activeDragSrc, touch.clientX, touch.clientY);
+    
+    // No creamos el ghost inmediatamente para permitir el scroll
+    // Solo si el usuario mantiene el toque por un momento o si movemos lo suficiente
 }
 
 function onDocumentTouchMove(e) {
     if (!activeDragSrc) return;
     const touch = e.touches[0];
-    moveGhost(touch.clientX, touch.clientY);
+    
+    // Si ha pasado más de 150ms, asumimos que quiere arrastrar, no scrollear
+    if (!ghostEl && (Date.now() - touchStartTime > 150)) {
+        createGhost(activeDragSrc, touch.clientX, touch.clientY);
+    }
+    
+    if (ghostEl) {
+        if (e.cancelable) e.preventDefault();
+        moveGhost(touch.clientX, touch.clientY);
+    }
 }
+
+
 
 function onDocumentTouchEnd(e) {
     if (!activeDragSrc) return;
@@ -444,6 +458,26 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('assetsScrollThumb')
     );
     window._initAssetsScrollbar();
+
+    // Lógica para las flechas de scroll
+    function setupArrows(containerId, leftBtnId, rightBtnId) {
+        const container = document.getElementById(containerId);
+        const leftBtn = document.getElementById(leftBtnId);
+        const rightBtn = document.getElementById(rightBtnId);
+        
+        const scrollAmount = 150;
+
+        leftBtn.addEventListener('click', () => {
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+
+        rightBtn.addEventListener('click', () => {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+    }
+
+    setupArrows('categoryTabs', 'tabsScrollLeft', 'tabsScrollRight');
+    setupArrows('assetsContainer', 'assetsScrollLeft', 'assetsScrollRight');
 
     renderCategory(0);
 });

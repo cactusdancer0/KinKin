@@ -157,6 +157,37 @@ html, body {
 #resetBtn    { background: #ff2a6d; box-shadow: 0 0 10px #ff2a6d; }
 #downloadBtn { background: #05d9e8; color: #0d0221; box-shadow: 0 0 10px #05d9e8; }
 
+/* ── SCROLL WRAPPER & ARROWS ── */
+.scroll-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.scroll-arrow {
+    display: none; /* Oculto por defecto en desktop */
+    background: #1a0b36;
+    border: 2px solid #05d9e8;
+    color: #05d9e8;
+    font-family: 'Press Start 2P';
+    font-size: 10px;
+    padding: 10px 5px;
+    cursor: pointer;
+    z-index: 5;
+    flex-shrink: 0;
+    transition: all 0.1s;
+}
+
+.scroll-arrow:active {
+    background: #ff2a6d;
+    border-color: #ff2a6d;
+    color: #fff;
+}
+
+.scroll-arrow--left { margin-right: 4px; }
+.scroll-arrow--right { margin-left: 4px; }
+
 /* ── FAKE SCROLLBAR (visible en mobile) ── */
 .scrollbar-track {
     display: none; /* oculto en desktop */
@@ -243,8 +274,9 @@ html, body {
     .subtitle { font-size: 9px; margin-bottom: 3px; }
     .logo-img { max-width: 110px; margin-bottom: 0; }
 
-    /* Mostrar fake scrollbars en mobile */
+    /* Mostrar flechas y fake scrollbars en mobile */
     .scrollbar-track { display: block; }
+    .scroll-arrow { display: block; }
 
     /* Tabs horizontales con scroll — sin scrollbar nativa */
     #categoryTabs {
