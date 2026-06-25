@@ -1,9 +1,7 @@
 document.addEventListener('touchmove', e => {
     if (e.cancelable) e.preventDefault();
 }, { passive: false });
-
 document.addEventListener('contextmenu', e => e.preventDefault());
-
 const CATEGORIES = [
     {
         name: "💇 Pelos",
@@ -15,11 +13,8 @@ const CATEGORIES = [
             "assets/Pelo morado.png",
             "assets/Pelo negro.png",
             "assets/Pelo rojo.png",
-
-            
         ]
     },
-    
     {
         name: "👕 Camisas",
         size: 0.70,
@@ -111,11 +106,8 @@ const CATEGORIES = [
         ]
     }
 ];
-
-
 let stage, layer;
 let activeCategoryIndex = 0;
-
 const transformer = new Konva.Transformer({
     rotateEnabled: true,
     enabledAnchors: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
@@ -127,10 +119,8 @@ const transformer = new Konva.Transformer({
     keepRatio: true,
     padding: 4,
 });
-
 let activeDragSrc = null;
 let ghostEl = null;
-
 function createGhost(src, x, y) {
     ghostEl = document.createElement('img');
     ghostEl.src = src;
@@ -149,63 +139,45 @@ function createGhost(src, x, y) {
     `;
     document.body.appendChild(ghostEl);
 }
-
 function moveGhost(x, y) {
     if (!ghostEl) return;
     ghostEl.style.left = x + 'px';
     ghostEl.style.top = y + 'px';
 }
-
 function removeGhost() {
     if (ghostEl) { ghostEl.remove(); ghostEl = null; }
 }
-
 let touchStartTime = 0;
 function onAssetTouchStart(e) {
     touchStartTime = Date.now();
     const asset = e.currentTarget;
     activeDragSrc = asset.dataset.src;
-    
-    // No creamos el ghost inmediatamente para permitir el scroll
-    // Solo si el usuario mantiene el toque por un momento o si movemos lo suficiente
 }
-
 function onDocumentTouchMove(e) {
     if (!activeDragSrc) return;
     const touch = e.touches[0];
-    
-    // Si ha pasado más de 150ms, asumimos que quiere arrastrar, no scrollear
     if (!ghostEl && (Date.now() - touchStartTime > 150)) {
         createGhost(activeDragSrc, touch.clientX, touch.clientY);
     }
-    
     if (ghostEl) {
         if (e.cancelable) e.preventDefault();
         moveGhost(touch.clientX, touch.clientY);
     }
 }
-
-
-
 function onDocumentTouchEnd(e) {
     if (!activeDragSrc) return;
     const touch = e.changedTouches[0];
     removeGhost();
-
     const stageRect = document.getElementById('stage-container').getBoundingClientRect();
     const x = touch.clientX - stageRect.left;
     const y = touch.clientY - stageRect.top;
-
     if (x >= 0 && y >= 0 && x <= stageRect.width && y <= stageRect.height) {
         const size = CATEGORIES[activeCategoryIndex].size;
         createItem(activeDragSrc, x, y, size);
     }
-
     activeDragSrc = null;
 }
-
 function onDocumentDragOver(e) { e.preventDefault(); }
-
 function onDocumentDrop(e) {
     e.preventDefault();
     const src = e.dataTransfer.getData("src");
@@ -214,7 +186,6 @@ function onDocumentDrop(e) {
     const size = CATEGORIES[activeCategoryIndex].size;
     createItem(src, e.clientX - rect.left, e.clientY - rect.top, size);
 }
-
 function loadMascot() {
     Konva.Image.fromURL('assets/mascot.png', (img) => {
         const scaleX = (stage.width() * 0.7) / img.width();
@@ -231,21 +202,17 @@ function loadMascot() {
         layer.draw();
     });
 }
-
 function createItem(src, x, y, sizeFactor) {
     Konva.Image.fromURL(src, (img) => {
         const maxDim = Math.min(stage.width(), stage.height()) * sizeFactor;
         const scale = maxDim / Math.max(img.width(), img.height());
         const scaledW = img.width() * scale;
         const scaledH = img.height() * scale;
-
         const clampedX = Math.min(Math.max(x - scaledW / 2, 0), stage.width() - scaledW);
         const clampedY = Math.min(Math.max(y - scaledH / 2, 0), stage.height() - scaledH);
-
         img.scale({ x: scale, y: scale });
         img.position({ x: clampedX, y: clampedY });
         img.draggable(true);
-
         img.on("mousedown touchstart", () => {
             transformer.nodes([img]);
             img.moveToTop();
@@ -253,7 +220,6 @@ function createItem(src, x, y, sizeFactor) {
             layer.draw();
             document.getElementById('deleteBtn').style.display = 'block';
         });
-
         img.on("dragend", () => {
             const pos = img.getAbsolutePosition();
             const outLeft  = pos.x + img.width()  * img.scaleX() < 0;
@@ -267,31 +233,25 @@ function createItem(src, x, y, sizeFactor) {
                 document.getElementById('deleteBtn').style.display = 'none';
             }
         });
-
         layer.add(img);
         transformer.moveToTop();
         transformer.nodes([img]);
         layer.draw();
     });
 }
-
 function downloadCanvas() {
     transformer.nodes([]);
     layer.draw();
-
     const W = stage.width();
     const H = stage.height();
     const PR = 2;
-
     const offscreen = document.createElement('canvas');
     offscreen.width = W * PR;
     offscreen.height = H * PR;
     const ctx = offscreen.getContext('2d');
     ctx.scale(PR, PR);
-
     ctx.fillStyle = '#0d0221';
     ctx.fillRect(0, 0, W, H);
-
     ctx.strokeStyle = 'rgba(5, 217, 232, 0.18)';
     ctx.lineWidth = 1;
     const gridSize = 40;
@@ -301,12 +261,10 @@ function downloadCanvas() {
     for (let y = 0; y <= H; y += gridSize) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
     }
-
     const stageDataURL = stage.toDataURL({ pixelRatio: PR });
     const stageImg = new Image();
     stageImg.onload = () => {
         ctx.drawImage(stageImg, 0, 0, W, H);
-
         const logoImg = new Image();
         logoImg.onload = () => {
             const logoH = H * 0.1;
@@ -315,7 +273,6 @@ function downloadCanvas() {
             ctx.globalAlpha = 0.9;
             ctx.drawImage(logoImg, W - logoW - margin, H - logoH - margin, logoW, logoH);
             ctx.globalAlpha = 1;
-
             const link = document.createElement('a');
             link.download = 'mi-kinkin.png';
             link.href = offscreen.toDataURL('image/png');
@@ -325,16 +282,13 @@ function downloadCanvas() {
     };
     stageImg.src = stageDataURL;
 }
-
 function renderCategory(index) {
     activeCategoryIndex = index;
     const container = document.getElementById('assetsContainer');
     container.innerHTML = '';
-
     document.querySelectorAll('.cat-tab').forEach((tab, i) => {
         tab.classList.toggle('active', i === index);
     });
-
     const cat = CATEGORIES[index];
     cat.assets.forEach(src => {
         const wrapper = document.createElement("div");
@@ -342,40 +296,29 @@ function renderCategory(index) {
         wrapper.dataset.src = src;
         wrapper.draggable = true;
         wrapper.innerHTML = `<div class="asset-box"><img src="${src}" draggable="false"></div>`;
-
         wrapper.addEventListener("dragstart", (e) => {
             e.dataTransfer.setData("src", src);
         });
-
         wrapper.addEventListener("touchstart", onAssetTouchStart, { passive: false });
-
         wrapper.addEventListener("click", () => {
             if (!stage) return;
             createItem(src, stage.width() / 2, stage.height() / 2, cat.size);
         });
-
         container.appendChild(wrapper);
     });
-
 }
-
 window.addEventListener('load', () => {
     const container = document.getElementById('stage-container');
-
     stage = new Konva.Stage({
         container: 'stage-container',
         width: container.offsetWidth,
         height: container.offsetHeight
     });
-
     layer = new Konva.Layer();
     stage.add(layer);
     layer.add(transformer);
-
     loadMascot();
-
     const deleteBtn = document.getElementById('deleteBtn');
-
     deleteBtn.addEventListener('click', () => {
         const selected = transformer.nodes();
         if (selected.length > 0) {
@@ -385,7 +328,6 @@ window.addEventListener('load', () => {
             deleteBtn.style.display = 'none';
         }
     });
-
     stage.on("click tap", (e) => {
         if (e.target === stage) {
             transformer.nodes([]);
@@ -393,13 +335,10 @@ window.addEventListener('load', () => {
             deleteBtn.style.display = 'none';
         }
     });
-
     container.addEventListener("dragover", onDocumentDragOver);
     container.addEventListener("drop", onDocumentDrop);
-
     document.addEventListener("touchmove", onDocumentTouchMove, { passive: false });
     document.addEventListener("touchend", onDocumentTouchEnd);
-
     document.getElementById("resetBtn").onclick = () => {
         transformer.nodes([]);
         transformer.remove();
@@ -408,19 +347,15 @@ window.addEventListener('load', () => {
         document.getElementById('deleteBtn').style.display = 'none';
         loadMascot();
     };
-
     document.getElementById("downloadBtn").onclick = downloadCanvas;
-
     window.addEventListener('resize', () => {
         stage.width(container.offsetWidth);
         stage.height(container.offsetHeight);
         layer.draw();
     });
 });
-
 document.addEventListener("DOMContentLoaded", () => {
     const tabsContainer = document.getElementById('categoryTabs');
-
     CATEGORIES.forEach((cat, index) => {
         const tab = document.createElement('button');
         tab.className = 'cat-tab' + (index === 0 ? ' active' : '');
@@ -432,6 +367,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         tabsContainer.appendChild(tab);
     });
-
     renderCategory(0);
 });
