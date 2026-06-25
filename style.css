@@ -9,7 +9,6 @@ html, body {
     background: #0d0221;
     font-family: 'Press Start 2P', cursive;
     color: #05d9e8;
-    /* Bloquea completamente el pull-to-refresh y overscroll del navegador */
     overscroll-behavior: none;
     overflow: hidden;
     height: 100%;
@@ -21,13 +20,12 @@ html, body {
 
 .app {
     display: flex;
-    height: 100dvh; /* dynamic viewport height: evita el problema de la barra del navegador */
+    height: 100dvh;
     flex-direction: row;
     overflow: hidden;
     touch-action: none;
 }
 
-/* ── SIDEBAR ── */
 .sidebar {
     width: 220px;
     background: #0d0221;
@@ -40,25 +38,65 @@ html, body {
     overflow: hidden;
 }
 
-.logo    { color: #ff2a6d; font-size: 18px; margin: 0 0 10px 0; }
-.subtitle { font-size: 7px; margin-bottom: 12px; color: #fff; }
+.logo-img {
+    width: 100%;
+    max-width: 180px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    display: block;
+    margin-bottom: 10px;
+}
 
-/* ── ASSET GRID ── */
+#categoryTabs {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 8px;
+    overflow-y: auto;
+    max-height: 200px;
+    flex-shrink: 0;
+    overscroll-behavior: contain;
+}
+
+.cat-tab {
+    background: #1a0b36;
+    border: 2px solid #05d9e8;
+    color: #05d9e8;
+    font-family: 'Press Start 2P';
+    font-size: 6px;
+    padding: 6px 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.1s, border-color 0.1s, color 0.1s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cat-tab.active,
+.cat-tab:hover {
+    background: #ff2a6d;
+    border-color: #ff2a6d;
+    color: #fff;
+}
+
 #assetsContainer {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
     gap: 8px;
     flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: 2px;
-    /* Evita que el scroll del grid dispare el pull-to-refresh */
     overscroll-behavior: contain;
 }
 
 .asset { cursor: grab; user-select: none; -webkit-user-select: none; }
+
 .asset-box {
-    width: 100%;
+    width: 82px;
+    height: 82px;
     aspect-ratio: 1;
     background: #1a0b36;
     border: 3px solid #05d9e8;
@@ -67,7 +105,9 @@ html, body {
     justify-content: center;
     transition: border-color 0.15s;
 }
+
 .asset-box:active { border-color: #ff2a6d; }
+
 .asset-box img {
     max-width: 70%;
     max-height: 70%;
@@ -78,36 +118,27 @@ html, body {
     -webkit-user-drag: none;
 }
 
-/* ── BOTONES ── */
 .btn-group {
-    margin-top: 12px;
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 #resetBtn, #downloadBtn {
-    padding: 12px 8px;
+    padding: 11px 8px;
     border: none;
     color: white;
     font-family: 'Press Start 2P';
-    font-size: 9px;
+    font-size: 8px;
     cursor: pointer;
     width: 100%;
 }
 
-#resetBtn {
-    background: #ff2a6d;
-    box-shadow: 0 0 10px #ff2a6d;
-}
+#resetBtn     { background: #ff2a6d; box-shadow: 0 0 10px #ff2a6d; }
+#downloadBtn { background: #05d9e8; color: #0d0221; box-shadow: 0 0 10px #05d9e8; }
 
-#downloadBtn {
-    background: #05d9e8;
-    color: #0d0221;
-    box-shadow: 0 0 10px #05d9e8;
-}
-
-/* ── CANVAS ── */
 #stage-container {
     flex: 1;
     position: relative;
@@ -119,7 +150,6 @@ html, body {
     overflow: hidden;
 }
 
-/* ── MOBILE ── */
 @media (max-width: 768px) {
     .app {
         flex-direction: column;
@@ -130,53 +160,85 @@ html, body {
         height: auto;
         border-right: none;
         border-bottom: 3px solid #ff2a6d;
-        padding: 8px 10px;
+        padding: 6px 8px;
+        display: flex;
         flex-direction: column;
-        overflow: visible;
+        overflow: hidden;
+        flex-shrink: 0;
     }
 
-    .logo { font-size: 13px; margin: 0 0 2px 0; }
-    .subtitle { font-size: 6px; margin-bottom: 6px; }
-
-    /* En mobile: todo en una fila horizontal */
-    .sidebar > *:not(.logo):not(.subtitle) {
-        /* layout horizontal para assets + botones */
+    .header-row {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        margin-bottom: 6px;
     }
 
-    /* Reorganizar sidebar en mobile como una sola fila */
-    .sidebar {
-        display: grid;
-        grid-template-rows: auto auto 1fr;
-    }
+    .logo-img { max-width: 110px; margin-bottom: 4px; }
 
-    #assetsContainer {
-        grid-template-columns: repeat(5, 1fr);
+    #categoryTabs {
+        display: flex;
+        flex-direction: row;
         gap: 5px;
         overflow-x: auto;
         overflow-y: hidden;
-        flex-grow: unset;
-        max-height: 80px;
+        max-height: none;
+        margin-bottom: 6px;
+        padding-bottom: 3px;
+        flex-shrink: 0;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+    }
+    #categoryTabs::-webkit-scrollbar { display: none; }
+
+    .cat-tab {
+        flex-shrink: 0;
+        font-size: 6px;
+        padding: 5px 8px;
+        border-width: 2px;
+        white-space: nowrap;
+    }
+
+    #assetsContainer {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 6px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        flex-grow: 0;
+        flex-shrink: 0;
+        padding-bottom: 3px;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+    }
+    #assetsContainer::-webkit-scrollbar { display: none; }
+
+    .asset {
+        flex-shrink: 0;
     }
 
     .asset-box {
-        width: 60px;
-        height: 60px;
+        width: 62px;
+        height: 62px;
         aspect-ratio: unset;
+        border-width: 2px;
     }
 
     .btn-group {
-        margin-top: 8px;
+        margin-top: 6px;
         flex-direction: row;
         gap: 6px;
     }
 
     #resetBtn, #downloadBtn {
-        padding: 8px 4px;
-        font-size: 7px;
+        padding: 7px 4px;
+        font-size: 6px;
+        flex: 1;
     }
 
     #stage-container {
         flex: 1;
-        min-height: 0; /* Importante: permite que flex crezca correctamente */
+        min-height: 0;
     }
 }
