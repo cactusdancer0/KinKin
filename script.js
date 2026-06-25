@@ -357,7 +357,6 @@ function renderCategory(index) {
         container.appendChild(wrapper);
     });
 
-    if (window._initAssetsScrollbar) window._initAssetsScrollbar();
 }
 
 window.addEventListener('load', () => {
@@ -433,57 +432,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         tabsContainer.appendChild(tab);
     });
-
-    function initFakeScrollbar(scrollEl, thumbEl) {
-        function update() {
-            const ratio = scrollEl.scrollLeft / (scrollEl.scrollWidth - scrollEl.clientWidth);
-            const thumbW = Math.max((scrollEl.clientWidth / scrollEl.scrollWidth) * 100, 15);
-            const maxLeft = 100 - thumbW;
-            thumbEl.style.width = thumbW + '%';
-            thumbEl.style.left = (ratio * maxLeft) + '%';
-        }
-        scrollEl.addEventListener('scroll', update, { passive: true });
-        const observer = new MutationObserver(update);
-        observer.observe(scrollEl, { childList: true, subtree: false });
-        update();
-    }
-
-    initFakeScrollbar(
-        document.getElementById('categoryTabs'),
-        document.getElementById('tabsScrollThumb')
-    );
-
-    window._initAssetsScrollbar = () => initFakeScrollbar(
-        document.getElementById('assetsContainer'),
-        document.getElementById('assetsScrollThumb')
-    );
-    window._initAssetsScrollbar();
-
-    // Lógica para las flechas de scroll
-    function setupArrows(containerId, leftBtnId, rightBtnId) {
-        const container = document.getElementById(containerId);
-        const leftBtn = document.getElementById(leftBtnId);
-        const rightBtn = document.getElementById(rightBtnId);
-        
-        const scrollAmount = 150;
-
-        const handleLeft = (e) => {
-            e.preventDefault();
-            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-        };
-        const handleRight = (e) => {
-            e.preventDefault();
-            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        };
-
-        leftBtn.addEventListener('click', handleLeft);
-        leftBtn.addEventListener('touchend', handleLeft);
-        rightBtn.addEventListener('click', handleRight);
-        rightBtn.addEventListener('touchend', handleRight);
-    }
-
-    setupArrows('categoryTabs', 'tabsScrollLeft', 'tabsScrollRight');
-    setupArrows('assetsContainer', 'assetsScrollLeft', 'assetsScrollRight');
 
     renderCategory(0);
 });
