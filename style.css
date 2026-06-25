@@ -193,12 +193,13 @@ html, body {
 #categoryTabs {
 display: grid !important;
 grid-template-columns: repeat(3, 1fr) !important;
-grid-template-rows: repeat(3, auto) !important;
+grid-template-rows: repeat(3, 1fr) !important;
 gap: 4px !important;
-margin-bottom: 6px !important;
+margin-bottom: 8px !important;
 flex-shrink: 0 !important;
-overflow: hidden !important;
+overflow: visible !important;
 width: 100% !important;
+grid-auto-flow: row !important;
 }
     .cat-tab {
         font-size: 5px;
