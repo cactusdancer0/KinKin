@@ -135,6 +135,34 @@ html, body {
 }
 #resetBtn    { background: #ff2a6d; box-shadow: 0 0 10px #ff2a6d; }
 #downloadBtn { background: #05d9e8; color: #0d0221; box-shadow: 0 0 10px #05d9e8; }
+#toggleMenuBtn {
+    display: none;
+}
+.retro-btn {
+    background: #05d9e8;
+    border: none;
+    color: #0d0221;
+    font-family: 'Press Start 2P';
+    font-size: 10px;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 
+        -4px 0 0 0 #0d0221,
+        4px 0 0 0 #0d0221,
+        0 -4px 0 0 #0d0221,
+        0 4px 0 0 #0d0221,
+        inset -4px -4px 0 0 #04a9b4;
+    margin-bottom: 10px;
+}
+.retro-btn:active {
+    box-shadow: 
+        -2px 0 0 0 #0d0221,
+        2px 0 0 0 #0d0221,
+        0 -2px 0 0 #0d0221,
+        0 2px 0 0 #0d0221,
+        inset -2px -2px 0 0 #04a9b4;
+    transform: translateY(2px);
+}
 #deleteBtn {
     display: none;
     position: absolute;
@@ -181,6 +209,26 @@ html, body {
         flex-direction: column;
         overflow: hidden;
         flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+    .sidebar.collapsed .sidebar-content {
+        display: none;
+    }
+    .sidebar.collapsed {
+        padding-top: 0;
+    }
+    #toggleMenuBtn {
+        display: none;
+    }
+    .sidebar.collapsed #toggleMenuBtn {
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+    }
+    .fixed-controls {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
     .header-row {
         display: flex;

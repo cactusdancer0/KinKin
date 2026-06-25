@@ -12,16 +12,21 @@
 </head>
 <body>
     <div class="app">
-        <div class="sidebar">
-            <div class="header-row">
-                <p class="subtitle">CREA TU PROPIO</p>
-                <img src="assets/KinKinLogo2.png" class="logo-img" alt="KIN KIN">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-content" id="sidebarContent">
+                <div class="header-row">
+                    <p class="subtitle">CREA TU PROPIO</p>
+                    <img src="assets/KinKinLogo2.png" class="logo-img" alt="KIN KIN">
+                </div>
+                <div id="categoryTabs"></div>
+                <div id="assetsContainer"></div>
             </div>
-            <div id="categoryTabs"></div>
-            <div id="assetsContainer"></div>
-            <div class="btn-group">
-                <button id="downloadBtn">⬇ GUARDAR</button>
-                <button id="resetBtn">RESET</button>
+            <div class="fixed-controls">
+                <button id="toggleMenuBtn" class="retro-btn">👕 ABRIR MENÚ</button>
+                <div class="btn-group">
+                    <button id="downloadBtn">⬇ GUARDAR</button>
+                    <button id="resetBtn">RESET</button>
+                </div>
             </div>
         </div>
         <div id="stage-container"></div>
