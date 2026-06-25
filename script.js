@@ -467,13 +467,19 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const scrollAmount = 150;
 
-        leftBtn.addEventListener('click', () => {
+        const handleLeft = (e) => {
+            e.preventDefault();
             container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-        });
-
-        rightBtn.addEventListener('click', () => {
+        };
+        const handleRight = (e) => {
+            e.preventDefault();
             container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        });
+        };
+
+        leftBtn.addEventListener('click', handleLeft);
+        leftBtn.addEventListener('touchend', handleLeft);
+        rightBtn.addEventListener('click', handleRight);
+        rightBtn.addEventListener('touchend', handleRight);
     }
 
     setupArrows('categoryTabs', 'tabsScrollLeft', 'tabsScrollRight');
