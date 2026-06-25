@@ -6,8 +6,23 @@ document.addEventListener('contextmenu', e => e.preventDefault());
 
 const CATEGORIES = [
     {
+        name: "💇 Pelos",
+        size: 0.40,
+        assets: [
+            "assets/Pelo cafe claro.png",
+            "assets/Pelo Cafe oscuro.png",
+            "assets/Pelo Canche.png",
+            "assets/Pelo morado.png",
+            "assets/Pelo negro.png",
+            "assets/Pelo rojo.png",
+
+            
+        ]
+    },
+    
+    {
         name: "👕 Camisas",
-        size: 0.75,
+        size: 0.70,
         assets: [
             "assets/Arrianza camisa.png",
             "assets/Camisa Amarilla.png",
@@ -97,6 +112,7 @@ const CATEGORIES = [
     }
 ];
 
+
 let stage, layer;
 let activeCategoryIndex = 0;
 
@@ -175,6 +191,7 @@ function onDocumentTouchEnd(e) {
 }
 
 function onDocumentDragOver(e) { e.preventDefault(); }
+
 function onDocumentDrop(e) {
     e.preventDefault();
     const src = e.dataTransfer.getData("src");
@@ -208,7 +225,7 @@ function createItem(src, x, y, sizeFactor) {
         const scaledW = img.width() * scale;
         const scaledH = img.height() * scale;
 
-        const clampedX = Math.min(Math.max(x - scaledW / 2, 0), stage.width()  - scaledW);
+        const clampedX = Math.min(Math.max(x - scaledW / 2, 0), stage.width() - scaledW);
         const clampedY = Math.min(Math.max(y - scaledH / 2, 0), stage.height() - scaledH);
 
         img.scale({ x: scale, y: scale });
@@ -220,6 +237,7 @@ function createItem(src, x, y, sizeFactor) {
             img.moveToTop();
             transformer.moveToTop();
             layer.draw();
+            document.getElementById('deleteBtn').style.display = 'block';
         });
 
         img.on("dragend", () => {
@@ -232,6 +250,7 @@ function createItem(src, x, y, sizeFactor) {
                 img.destroy();
                 transformer.nodes([]);
                 layer.draw();
+                document.getElementById('deleteBtn').style.display = 'none';
             }
         });
 
@@ -270,7 +289,6 @@ function downloadCanvas() {
     }
 
     const stageDataURL = stage.toDataURL({ pixelRatio: PR });
-
     const stageImg = new Image();
     stageImg.onload = () => {
         ctx.drawImage(stageImg, 0, 0, W, H);
@@ -324,6 +342,8 @@ function renderCategory(index) {
 
         container.appendChild(wrapper);
     });
+
+    if (window._initAssetsScrollbar) window._initAssetsScrollbar();
 }
 
 window.addEventListener('load', () => {
@@ -341,10 +361,23 @@ window.addEventListener('load', () => {
 
     loadMascot();
 
+    const deleteBtn = document.getElementById('deleteBtn');
+
+    deleteBtn.addEventListener('click', () => {
+        const selected = transformer.nodes();
+        if (selected.length > 0) {
+            selected.forEach(n => n.destroy());
+            transformer.nodes([]);
+            layer.draw();
+            deleteBtn.style.display = 'none';
+        }
+    });
+
     stage.on("click tap", (e) => {
         if (e.target === stage) {
             transformer.nodes([]);
             layer.draw();
+            deleteBtn.style.display = 'none';
         }
     });
 
@@ -355,8 +388,11 @@ window.addEventListener('load', () => {
     document.addEventListener("touchend", onDocumentTouchEnd);
 
     document.getElementById("resetBtn").onclick = () => {
+        transformer.nodes([]);
+        transformer.remove();
         layer.destroyChildren();
         layer.add(transformer);
+        document.getElementById('deleteBtn').style.display = 'none';
         loadMascot();
     };
 
@@ -383,6 +419,31 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         tabsContainer.appendChild(tab);
     });
+
+    function initFakeScrollbar(scrollEl, thumbEl) {
+        function update() {
+            const ratio = scrollEl.scrollLeft / (scrollEl.scrollWidth - scrollEl.clientWidth);
+            const thumbW = Math.max((scrollEl.clientWidth / scrollEl.scrollWidth) * 100, 15);
+            const maxLeft = 100 - thumbW;
+            thumbEl.style.width = thumbW + '%';
+            thumbEl.style.left = (ratio * maxLeft) + '%';
+        }
+        scrollEl.addEventListener('scroll', update, { passive: true });
+        const observer = new MutationObserver(update);
+        observer.observe(scrollEl, { childList: true, subtree: false });
+        update();
+    }
+
+    initFakeScrollbar(
+        document.getElementById('categoryTabs'),
+        document.getElementById('tabsScrollThumb')
+    );
+
+    window._initAssetsScrollbar = () => initFakeScrollbar(
+        document.getElementById('assetsContainer'),
+        document.getElementById('assetsScrollThumb')
+    );
+    window._initAssetsScrollbar();
 
     renderCategory(0);
 });
