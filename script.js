@@ -303,9 +303,6 @@ function renderCategory(index) {
         wrapper.addEventListener("click", () => {
             if (!stage) return;
             createItem(src, stage.width() / 2, stage.height() / 2, cat.size);
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.add('collapsed');
-            }
         });
         container.appendChild(wrapper);
     });
@@ -370,16 +367,5 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         tabsContainer.appendChild(tab);
     });
-    const toggleBtn = document.getElementById('toggleMenuBtn');
-    const sidebar = document.getElementById('sidebar');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.remove('collapsed');
-        });
-        toggleBtn.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            sidebar.classList.remove('collapsed');
-        });
-    }
     renderCategory(0);
 });
