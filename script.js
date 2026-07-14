@@ -4,7 +4,7 @@ document.addEventListener('touchmove', e => {
 document.addEventListener('contextmenu', e => e.preventDefault());
 const CATEGORIES = [
     {
-        name: "💇 Pelos",
+        name: "💇 Cabellos",
         size: 0.40,
         assets: [
             "assets/Pelo cafe claro.png",
