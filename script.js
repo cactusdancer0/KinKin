@@ -25,6 +25,9 @@ const CATEGORIES = [
             "assets/Camisa negra.png",
             "assets/Camisa roja.png",
             "assets/Camisa verde.png",
+            "assets/Camisa aqua.png",
+            "assets/Camisa celeste y rojo.png",
+
         ]
     },
     {
@@ -44,7 +47,7 @@ const CATEGORIES = [
             "assets/Vestido aqua.png",
             "assets/Vestido negro.png",
             "assets/Vestido rosa.png",
-            "assets/Vestido verde.png",
+            "assets/Vestido rojo.png"
         ]
     },
     {
@@ -54,9 +57,13 @@ const CATEGORIES = [
             "assets/Pantalon cafe.png",
             "assets/Pantalon celeste.png",
             "assets/Pantalon negro.png",
+            "assets/Pantalon Rojo.png",
+
             "assets/Pantalon.png",
             "assets/Short flores.png",
             "assets/Short original.png",
+            "assets/Short celeste y rojo.png",
+
         ]
     },
     {
@@ -66,14 +73,17 @@ const CATEGORIES = [
             "assets/Falda azul.png",
             "assets/Falda naranja.png",
             "assets/Falda rosa.png",
+            "assets/Falda roja.png",
+
+            
         ]
     },
     {
         name: "🎩 Sombreros",
         size: 0.40,
         assets: [
-            "assets/cowboy_hat.png",
-            "assets/sombrero1.png",
+            "assets/Sombrero aqua.png",
+            "assets/Sombrero celeste y rojo.png",
             "assets/sombrero amarillo.png",
             "assets/Sombrero azul.png",
             "assets/Sombrero morado.png",
@@ -82,6 +92,9 @@ const CATEGORIES = [
             "assets/Sombrero rojo.png",
             "assets/Sombrero rosa.png",
             "assets/Sombrero verde.png",
+            "assets/Corona.png",
+
+            
         ]
     },
     {
@@ -92,6 +105,10 @@ const CATEGORIES = [
             "assets/Zapatos cafes.png",
             "assets/Zapatos grises.png",
             "assets/Zapatos negros.png",
+            "assets/Zapatos rosa.png",
+            "assets/Zapatos azules.png",
+
+            
         ]
     },
     {
@@ -103,6 +120,7 @@ const CATEGORIES = [
             "assets/Lentes negros.png",
             "assets/Moño negro.png",
             "assets/Moño rojo.png",
+            "Pelota de futbol.png",
         ]
     }
 ];
