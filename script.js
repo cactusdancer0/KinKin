@@ -24,7 +24,7 @@ const CATEGORIES = [
             "assets/Camisa Morada.png",
             "assets/Camisa negra.png",
             "assets/Camisa roja.png",
-            "assets/Camisa aqua.png",
+            "assets/Camisa Aqua.png",
             "assets/Camisa celeste y rojo.png",
 
         ]
