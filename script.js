@@ -27,7 +27,6 @@ const CATEGORIES = [
             "assets/Camisa verde.png",
             "assets/Camisa aqua.png",
             "assets/Camisa celeste y rojo.png",
-
         ]
     },
     {
@@ -58,12 +57,10 @@ const CATEGORIES = [
             "assets/Pantalon celeste.png",
             "assets/Pantalon negro.png",
             "assets/Pantalon Rojo.png",
-
             "assets/Pantalon.png",
             "assets/Short flores.png",
             "assets/Short original.png",
             "assets/Short celeste y rojo.png",
-
         ]
     },
     {
@@ -74,8 +71,6 @@ const CATEGORIES = [
             "assets/Falda naranja.png",
             "assets/Falda rosa.png",
             "assets/Falda roja.png",
-
-            
         ]
     },
     {
@@ -93,8 +88,6 @@ const CATEGORIES = [
             "assets/Sombrero rosa.png",
             "assets/Sombrero verde.png",
             "assets/Corona.png",
-
-            
         ]
     },
     {
@@ -107,8 +100,6 @@ const CATEGORIES = [
             "assets/Zapatos negros.png",
             "assets/Zapatos rosa.png",
             "assets/Zapatos azules.png",
-
-            
         ]
     },
     {
